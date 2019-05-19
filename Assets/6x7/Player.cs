@@ -14,7 +14,6 @@ public class Player : MonoBehaviour {
     public bool isMoving = false;
 
     public bool onCooldown = false;
-    public bool onExit = false;
     private float moveTime = 0.1f;
 
     private AudioSource walkingSound;
@@ -55,7 +54,7 @@ public class Player : MonoBehaviour {
 	void Update () 
 	{
         //We do nothing if the player is still moving.
-        if (isMoving || onCooldown || onExit ) 
+		if (isMoving || onCooldown || GameManager.Instance.isGameOver ) 
 			return;
 
         //To player move directions.
@@ -203,18 +202,20 @@ public class Player : MonoBehaviour {
         {
             if (AudioManager.getInstance() != null)
                 AudioManager.getInstance().Find("victory").source.Play();
-            onExit = true; //Prevent the player from moving.
-			GridManager.Instance.ShowGameOverPopUp (true);
+
+			if(GridManager.Instance.totalCoinCount == coinCount)
+			{
+				GameManager.Instance.isGameOver = true;
+				StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (true));
+			}
+
         }
         else if ( coll.tag == "coinTag")
         {
             coinCount++; 
 			GameManager.Instance.UpdateCoinCollection (coinCount);
             coll.gameObject.SetActive(false);
-			if(GridManager.Instance.totalCoinCount == coinCount)
-			{
-				GridManager.Instance.exitDoor.SetActive (true);
-			}
+	
 
             if (AudioManager.getInstance() != null)
                 AudioManager.getInstance().Find("woodpickup").source.Play();
@@ -222,7 +223,8 @@ public class Player : MonoBehaviour {
 
 		if ( coll.tag == "enemyTag")
 		{
-			GridManager.Instance.ShowGameOverPopUp (false);
+			GameManager.Instance.isGameOver = true;
+			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}
 
     }

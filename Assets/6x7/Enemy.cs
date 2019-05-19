@@ -45,6 +45,10 @@ public class Enemy : MonoBehaviour {
 	}
 	void RandomMoveForPatroller()
 	{
+		if(GameManager.Instance.isGameOver)
+		{
+			CancelInvoke ();
+		}
 		randomMoveX = 0;
 		randomMoveY = 1 * ReverseMovememt();
 
@@ -74,6 +78,11 @@ public class Enemy : MonoBehaviour {
 
 	void FollowPlayer()
 	{
+		if(GameManager.Instance.isGameOver)
+		{
+			CancelInvoke ();
+		}
+
 		Vector3 targetCoordinate = FindPlayerDirection ();
 
 		bool hasGroundTile = getCell (groundTilemap, transform.position + targetCoordinate) != null; //If target Tile has a ground

@@ -6,10 +6,7 @@ using UnityEngine.UI;
 public class GridManager : MonoBehaviour 
 {
 	private static GridManager instance = null;
-
-
 	public static GridManager Instance { get { return instance; } }
-
 
 	private void Awake()
 	{
@@ -22,25 +19,12 @@ public class GridManager : MonoBehaviour
 	}
 
 	public int totalCoinCount;
-	public GameObject exitDoor;
 	void Start () 
 	{
+		//Geting the total coin present in the mission
 		totalCoinCount = transform.Find("CoinParent").transform.childCount;
-		Debug.LogError (totalCoinCount);
+
 		GameManager.Instance.UpdateCoinCollection (0);
-		exitDoor.SetActive (false);
 	}
-
-	public void ShowGameOverPopUp(bool WinOrLoose)
-	{
-		if (WinOrLoose) 
-		{
-			Debug.LogError ("Win");
-		}
-		else
-		{
-			Debug.LogError ("Loose");
-		}
-	}
-
+		
 }
