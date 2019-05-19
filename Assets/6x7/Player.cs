@@ -60,8 +60,8 @@ public class Player : MonoBehaviour {
         //To player move directions.
 
         //To get move directions
-//        horizontal = (int)(Input.GetAxisRaw("Horizontal"));
-//        vertical = (int)(Input.GetAxisRaw("Vertical"));
+        horizontal = (int)(Input.GetAxisRaw("Horizontal"));
+        vertical = (int)(Input.GetAxisRaw("Vertical"));
 
         //We can't go in both directions at the same time making one as zero
         if ( horizontal != 0 )
@@ -223,8 +223,8 @@ public class Player : MonoBehaviour {
 
 		if ( coll.tag == "enemyTag")
 		{
-			GameManager.Instance.isGameOver = true;
-			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
+//			GameManager.Instance.isGameOver = true;
+//			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}
 
     }

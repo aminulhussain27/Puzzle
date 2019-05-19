@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 352751132}
   - component: {fileID: 352751131}
   m_Layer: 5
-  m_Name: Text
+  m_Name: WinLooseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -635,7 +635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &756390939
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Handle the map
 public class GridManager : MonoBehaviour 
 {
 	private static GridManager instance = null;
 	public static GridManager Instance { get { return instance; } }
+
+	public int totalCoinCount;
 
 	private void Awake()
 	{
 		if (instance != null && instance != this)
 		{
 			Destroy(this.gameObject);
-		} else {
+		} 
+		else 
+		{
 			instance = this;
 		}
 	}
 
-	public int totalCoinCount;
+
 	void Start () 
 	{
 		//Geting the total coin present in the mission

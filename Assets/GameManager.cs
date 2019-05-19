@@ -62,17 +62,17 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerator ShowGameOverPanelWithDelay(bool isWon)
 	{
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (1.2f);
 		if (isWon) 
 		{
 			mainMenuPanel.SetActive (true);
-			mainMenuPanel.transform.Find("WinText").GetComponent<Text>().text = "Mission Complete! '\n' Play Next Mission";
+			mainMenuPanel.transform.Find("WinLooseText").GetComponent<Text>().text = "Mission Complete! \n Play Next Mission";
 			currentLevel++;
 		}
 		else
 		{
 			mainMenuPanel.SetActive (true);
-			mainMenuPanel.transform.Find("WinText").GetComponent<Text>().text = "Mission Failed! '\n' Please try again";
+			mainMenuPanel.transform.Find("WinLooseText").GetComponent<Text>().text = "Mission Failed! \n Please try again";
 
 			if (currentLevel > 0) 
 			{
@@ -99,6 +99,8 @@ public class GameManager : MonoBehaviour {
 
 		tileMapObject = GameObject.Instantiate (levelTileMap [currentLevel]);
 		mainMenuPanel.SetActive (false);
+
+		Debug.Log (tileMapObject);
 	}
 	public void UpdateCoinCollection(int coinCollected)
 	{
