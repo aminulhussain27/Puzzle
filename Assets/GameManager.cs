@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour {
 		if(coinCollected == GridManager.Instance.totalCoinCount)
 		{
 			coinCollectedText.text = "Well done! \n All coin collected.";
+			GridManager.Instance.exitDoorAnim.enabled = true;
 		}
 	}
 }

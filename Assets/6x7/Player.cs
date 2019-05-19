@@ -215,7 +215,6 @@ public class Player : MonoBehaviour {
             coinCount++; 
 			GameManager.Instance.UpdateCoinCollection (coinCount);
             coll.gameObject.SetActive(false);
-	
 
             if (AudioManager.getInstance() != null)
                 AudioManager.getInstance().Find("woodpickup").source.Play();
@@ -223,8 +222,8 @@ public class Player : MonoBehaviour {
 
 		if ( coll.tag == "enemyTag")
 		{
-//			GameManager.Instance.isGameOver = true;
-//			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
+			GameManager.Instance.isGameOver = true;
+			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}
 
     }

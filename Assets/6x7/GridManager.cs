@@ -10,6 +10,7 @@ public class GridManager : MonoBehaviour
 	public static GridManager Instance { get { return instance; } }
 
 	public int totalCoinCount;
+	public Animator exitDoorAnim;
 
 	private void Awake()
 	{
@@ -30,6 +31,7 @@ public class GridManager : MonoBehaviour
 		totalCoinCount = transform.Find("CoinParent").transform.childCount;
 
 		GameManager.Instance.UpdateCoinCollection (0);
+		exitDoorAnim = transform.Find ("Exit").GetComponent<Animator> ();
 	}
 		
 }
