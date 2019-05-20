@@ -9,52 +9,51 @@ public class Player : MonoBehaviour {
     public Tilemap groundTilemap;
     public Tilemap obstaclesTilemap;
 
-    public int coinCount = 0;
-    public bool isMoving = false;
+	public int coinCount = 0;
 
-    public bool onCooldown = false;
+	public bool isMoving = false;
+
+	public bool onCooldown = false;
+
+
+	private int horizontal = 0;
+	private int vertical = 0;
+
     private float moveTime = 0.1f;
 
-    // Use this for initialization
     void Start () 
 	{
-		
+		//Giving the 4 Directional button action
 		GameManager.Instance.upButton.onClick.RemoveAllListeners ();
-		GameManager.Instance.upButton.onClick.AddListener( ()=>
-				{
-					vertical = 1;
-				});
+		GameManager.Instance.upButton.onClick.AddListener (() => {
+				vertical = 1;
+			});
 
 		GameManager.Instance.downButton.onClick.RemoveAllListeners ();
-		GameManager.Instance.downButton.onClick.AddListener( ()=>
-				{
-					vertical = -1;
-				});
+		GameManager.Instance.downButton.onClick.AddListener (() => {
+				vertical = -1;
+			});
 
 		GameManager.Instance.leftButton.onClick.RemoveAllListeners ();
-		GameManager.Instance.leftButton.onClick.AddListener( ()=>
-				{
-					horizontal = -1;
-				});
+		GameManager.Instance.leftButton.onClick.AddListener (() => {
+				horizontal = -1;
+			});
 
 		GameManager.Instance.rightButton.onClick.RemoveAllListeners ();
-		GameManager.Instance.rightButton.onClick.AddListener( ()=>
-				{
-					horizontal = 1;
-				});
-
+		GameManager.Instance.rightButton.onClick.AddListener (() => {
+				horizontal = 1;
+			});
 	}
 
 
-	int horizontal = 0;
-	int vertical = 0;
+
 	void Update () 
 	{
         //We do nothing if the player is still moving.
 		if (isMoving || onCooldown || GameManager.Instance.isGameOver ) 
 			return;
 
-        //To player move directions.
+        //To player move directions for Editor
 		#if UNITY_EDITOR
         //To get move directions
         horizontal = (int)(Input.GetAxisRaw("Horizontal"));
@@ -87,10 +86,11 @@ public class Player : MonoBehaviour {
 		if (isOnGround) 
 		{
 			//If the front tile is a walkable ground tile, the player moves here.
-			if (hasGroundTile && !hasObstacleTile) {
-
+			if (hasGroundTile && !hasObstacleTile) 
+			{
 				StartCoroutine (SmoothMovement (targetCell));
-			} else
+			} 
+			else
 				StartCoroutine (BlockedMovement (targetCell));
                
 			if (!isMoving)
@@ -100,9 +100,10 @@ public class Player : MonoBehaviour {
 
     private IEnumerator SmoothMovement(Vector3 end)
     {
+		//If already moving lets not start one more move coroutine
         while (isMoving) 
 			yield return null;
-
+		//Player status changed to Moving
         isMoving = true;
 
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
@@ -120,7 +121,7 @@ public class Player : MonoBehaviour {
         isMoving = false;
     }
 
-    //Blocked animation
+    //Blocked Movement and playing Animation Sounds
     private IEnumerator BlockedMovement(Vector3 end)
     {
         //while (isMoving) yield return null;
@@ -194,9 +195,9 @@ public class Player : MonoBehaviour {
 
 		if ( coll.tag == "enemyTag")
 		{
-//			#if CHEAT
+
 //			return;
-//			#endif
+
 			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}
     }

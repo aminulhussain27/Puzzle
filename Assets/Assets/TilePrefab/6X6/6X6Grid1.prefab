@@ -2921,7 +2921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
-  player: {fileID: 0}
+  player: {fileID: 114806280913375276}
   groundTilemap: {fileID: 8195094281813577978}
   obstaclesTilemap: {fileID: 8195094279725447912}
 --- !u!114 &114806280913375276

@@ -8,7 +8,7 @@ public class SoundManager : MonoBehaviour
 	static GameObject soundObj = null;
 
 	private static SoundManager soundManager = null;
-
+	//Creating singleton for use in different positions and for making sure only one instace is created
 	public static SoundManager Instance ()
 	{		
 		if (soundManager == null)
@@ -23,10 +23,12 @@ public class SoundManager : MonoBehaviour
 	}
 
 	GameObject soundObject = null;
-	public AudioClip[] musicClips;
+	public AudioClip[] musicClips;//In sce attaching the sound clips
+
 
 	public void playSound (SoundManager.SOUND_ID id, float volume =1f)
 	{
+		//A new gameobject is creating and attaching audioSource here
         soundObject = new  GameObject ("Sound");
        
 		soundObject.transform.SetParent (transform);
@@ -36,6 +38,7 @@ public class SoundManager : MonoBehaviour
 		audioSource.clip = musicClips [(int)id];
 		audioSource.Play ();
 
+		//If in some place i need custom volume
 		if(volume != 1f)
 		{
 			audioSource.volume = volume;
@@ -44,38 +47,9 @@ public class SoundManager : MonoBehaviour
 		//Destroying the sound object after fully playing
 		Destroy (soundObject, audioSource.clip.length);
 	}
-
-   
-    private AudioSource GetAudioSource(int soundID)
-    {
-        string soundClipName;
-        AudioSource _audioSource;
-
-        GameObject soundObjectRoot =  GameObject.Find ("Sounds").gameObject;
-
-        for (int i = 0; i < soundObjectRoot.transform.childCount; i++) 
-        {
-            soundClipName = "Sound_" + i.ToString();
-
-            if (soundObjectRoot.transform.GetChild(i).name.ToString() == soundClipName)
-            {
-                _audioSource = soundObjectRoot.transform.GetChild(i).GetComponent<AudioSource>();
-                return _audioSource;
-            }
-            else
-            {
-                soundClipName = "Sound_" + soundID.ToString();
-                if (soundObjectRoot.transform.GetChild(i).name.ToString() == soundClipName)
-                {
-                    _audioSource = soundObjectRoot.transform.GetChild(i).GetComponent<AudioSource>();
-                    return _audioSource;
-                }
-                return null;
-            }
-        }
-        return null;
-    }
 		
+		
+	//These are the Clip Id
 	public enum SOUND_ID
 	{
 		NONE = -1,

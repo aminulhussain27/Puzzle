@@ -21,13 +21,14 @@ public class Enemy : MonoBehaviour {
 	{
 		if(enemyType == EnemyType.PATROLLER)
 		{
-			InvokeRepeating ("RandomMoveForPatroller", 3, 2);
+			//Patrolling taking steps at 2 sec gap
+			InvokeRepeating ("MovementForPatroller", 3, 2);
 		}
 		if(enemyType == EnemyType.FOLLWER)
 		{
+			//Actively following at a time gap of 1.4
 			InvokeRepeating ("FollowPlayer", 2, 1.4f);
 		}
-
 	}
 
 	#region PATROLLER
@@ -37,15 +38,15 @@ public class Enemy : MonoBehaviour {
 		Vector2 targetCell = startCell + new Vector2 (0, patrolMove);
 		bool hasGroundTile = getCell (groundTilemap, targetCell) != null;
 
+		//If reaches the End tile, Reversing the direction
 		if (!hasGroundTile) 
 		{
 			patrolMove *= -1;
 		}
-			return patrolMove;
-
+		return patrolMove;
 	}
 
-	void RandomMoveForPatroller()
+	void MovementForPatroller()
 	{
 		if(GameManager.Instance.isGameOver)
 		{
@@ -67,46 +68,54 @@ public class Enemy : MonoBehaviour {
 
 	void FollowPlayer()
 	{
+		//If game is over Stopping all the Invoke function
 		if(GameManager.Instance.isGameOver)
 		{
 			CancelInvoke ();
 		}
 
-		Vector3 targetCoordinate = FindPlayerDirection ();
-
+		Vector3 targetCoordinate = FindPlayerDirection ();//Getting the Player coordinate, where to move
 		Move (targetCoordinate);
 	}
 
 	Vector2 FindPlayerDirection()
 	{
+		//Calculating the distace from player and Enemy
 		Vector2 distaceVector = player.transform.position - transform.position;
 		Vector2 whereToMove = Vector2.zero;
 
-		if(Mathf.Abs(distaceVector.x) > Mathf.Abs( distaceVector.y))
+		if(Mathf.Abs(distaceVector.x) > Mathf.Abs( distaceVector.y) || Mathf.Abs(distaceVector.x) < Mathf.Abs(distaceVector.y))
 		{
-			if (distaceVector.x > 0) 
+			//As both direction Enemy needs to move Hence randomly moving
+			int randomDirection = Random.Range (1, 100);
+			if (randomDirection % 2 == 0)
 			{
-				whereToMove = new Vector2 (1, 0);
+				if (distaceVector.x > 0) 
+				{
+					whereToMove = new Vector2 (1, 0);
+				}
+				else if(distaceVector.x < 0)
+				{
+					whereToMove = new Vector2 (-1, 0);
+				}
 			}
 			else
 			{
-				whereToMove = new Vector2 (-1, 0);
+				if (distaceVector.y > 0) 
+				{
+					whereToMove = new Vector2 (0, 1);
+				}
+				else if(distaceVector.y < 0)
+				{
+					whereToMove = new Vector2 (0, -1);
+				}
 			}
 		}
-		else if(Mathf.Abs(distaceVector.x) < Mathf.Abs(distaceVector.y))
-		{
-			if (distaceVector.y > 0) 
-			{
-				whereToMove = new Vector2 (0, 1);
-			}
-			else
-			{
-				whereToMove = new Vector2 (0, -1);
-			}
-		}
+
+		//In case X distance and Y distace is equal and Not on the same position as player
 		else if(distaceVector.x != 0 || distaceVector.y != 0)
 		{
-			int randomDirection = Random.Range (1, 10);
+			int randomDirection = Random.Range (1, 100);
 			if (randomDirection % 2 == 0) 
 			{		
 				if (distaceVector.x > 0) 
@@ -129,29 +138,24 @@ public class Enemy : MonoBehaviour {
 					whereToMove = new Vector2 (0, -1);
 				}
 			}
-//		else if(distaceVector.y != 0)
-//		{
-//			if (distaceVector.y > 0) 
-//			{
-//				whereToMove = new Vector2 (0, 1);
-//			}
-//			else
-//			{
-//				whereToMove = new Vector2 (0, -1);
-//			}
 		}
+//		if(enemyType == EnemyType.FOLLWER)
+//			Debug.LogError (whereToMove +  "    " + distaceVector);
 		return whereToMove;
 	}
 	#endregion
 
 	#region LAZY_ENEMY
+	//Player came inside the area
 	private void OnTriggerEnter2D(Collider2D coll)
 	{
 		if ( coll.tag == "Player")
 		{
-			InvokeRepeating("FollowPlayer",0.25f, 0.85f);
+			//Follow the player with some frequency of time
+			InvokeRepeating("FollowPlayer",0.75f, 1.15f);
 		}
 	}
+	//Is player went outside my Zone, Lets not follow him
 	private void OnTriggerExit2D(Collider2D coll)
 	{
 		if (coll.tag == "Player") 
@@ -183,7 +187,7 @@ public class Enemy : MonoBehaviour {
 	{
 		float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 		float inverseMoveTime = 1 / 0.1f;
-
+		//Remaining distace is greater than almost zero
 		while (sqrRemainingDistance > float.Epsilon)
 		{
 			Vector3 newPosition = Vector3.MoveTowards(transform.position, end, inverseMoveTime * Time.deltaTime);
