@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerator ShowGameOverPanelWithDelay(bool isWon)
 	{
+		SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_END);
+
 		yield return new WaitForSeconds (1.2f);
 		if (isWon) 
 		{
@@ -92,14 +94,14 @@ public class GameManager : MonoBehaviour {
 	public void LoadLevel()
 	{
 		isGameOver = false;
-		if(currentLevel > levelTileMap.Length)
+		if(currentLevel == levelTileMap.Length)
 		{
-			currentLevel = levelTileMap.Length - 1;
+			currentLevel = Random.Range(0, levelTileMap.Length);
 		}
 
 		tileMapObject = GameObject.Instantiate (levelTileMap [currentLevel]);
 		mainMenuPanel.SetActive (false);
-
+		SoundManager.Instance ().playSound (SoundManager.SOUND_ID.LOOP_BACKGROUND, 0.5f);
 		Debug.Log (tileMapObject);
 	}
 	public void UpdateCoinCollection(int coinCollected)

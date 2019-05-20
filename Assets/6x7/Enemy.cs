@@ -91,7 +91,7 @@ public class Enemy : MonoBehaviour {
 		if(!hasGroundTile || hasObstacleTile)
 		{
 		
-			Debug.LogError (targetCoordinate);
+			Debug.Log (targetCoordinate);
 
 		}
 

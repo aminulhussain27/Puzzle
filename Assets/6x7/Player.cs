@@ -137,12 +137,8 @@ public class Player : MonoBehaviour {
     private IEnumerator BlockedMovement(Vector3 end)
     {
         //while (isMoving) yield return null;
-
+		SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_COLLIDE_WITH_BLOCKER);
         isMoving = true;
-
-
-        if (AudioManager.getInstance() != null)
-            AudioManager.getInstance().Find("blocked").source.Play();
 
         Vector3 originalPos = transform.position;
 
@@ -167,13 +163,6 @@ public class Player : MonoBehaviour {
             sqrRemainingDistance = (transform.position - originalPos).sqrMagnitude;
 
             yield return null;
-        }
-
-        //The lever disable the sound so its doesn't overlap with this one, so it blocked has been muted, we restore it.
-        if ( AudioManager.getInstance() != null && AudioManager.getInstance().Find("blocked").source.mute )
-        {
-            AudioManager.getInstance().Find("blocked").source.Stop();
-            AudioManager.getInstance().Find("blocked").source.mute = false;
         }
         isMoving = false;
     }
@@ -200,13 +189,16 @@ public class Player : MonoBehaviour {
         //If we collided with the exit, we load the next level in two seconds.
         if ( coll.tag == "exitTag")
         {
-            if (AudioManager.getInstance() != null)
-                AudioManager.getInstance().Find("victory").source.Play();
 
 			if(GridManager.Instance.totalCoinCount == coinCount)
 			{
+				SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_END);
 				GameManager.Instance.isGameOver = true;
 				StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (true));
+			}
+			else
+			{
+				SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_COLLIDE_WITH_BLOCKER);
 			}
 
         }
@@ -216,22 +208,18 @@ public class Player : MonoBehaviour {
 			GameManager.Instance.UpdateCoinCollection (coinCount);
             coll.gameObject.SetActive(false);
 
-            if (AudioManager.getInstance() != null)
-                AudioManager.getInstance().Find("woodpickup").source.Play();
+			SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_COIN_PICKUP);
         }
 
 		if ( coll.tag == "enemyTag")
 		{
-			GameManager.Instance.isGameOver = true;
-			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
+//			GameManager.Instance.isGameOver = true;
+//			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}
 
     }
 
-    public void grassSound()
-    {
-        if (AudioManager.getInstance() != null)
-            walkingSound = AudioManager.getInstance().Find("grass").source;
+	public void grassSound(){
     }
 
     public Collider2D whatsThere(Vector2 targetPos)

@@ -51,11 +51,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\6x7\AudioManager.cs" />
      <Compile Include="Assets\6x7\Enemy.cs" />
      <Compile Include="Assets\6x7\GridManager.cs" />
      <Compile Include="Assets\6x7\Player.cs" />
-     <Compile Include="Assets\6x7\Sound.cs" />
+     <Compile Include="Assets\6x7\SoundManager.cs" />
      <Compile Include="Assets\GameManager.cs" />
  <Reference Include="UnityEngine.CoreModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2017.4.27f1/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
