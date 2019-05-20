@@ -194,9 +194,9 @@ public class Player : MonoBehaviour {
 
 		if ( coll.tag == "enemyTag")
 		{
-			#if CHEAT
-			return;
-			#endif
+//			#if CHEAT
+//			return;
+//			#endif
 			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}
     }

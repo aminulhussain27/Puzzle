@@ -156,7 +156,6 @@ public class Enemy : MonoBehaviour {
 	{
 		if (coll.tag == "Player") 
 		{
-			Debug.LogError ("Exit");
 			CancelInvoke ();
 		}
 	}

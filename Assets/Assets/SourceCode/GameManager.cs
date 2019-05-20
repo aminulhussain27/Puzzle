@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject controlPanel;
 	public GameObject mainMenuPanel;
-
 	public GameObject[] levelTileMap;
 	GameObject tileMapObject;
 
@@ -103,8 +102,8 @@ public class GameManager : MonoBehaviour {
 		tileMapObject = GameObject.Instantiate (levelTileMap [currentLevel]);
 		mainMenuPanel.SetActive (false);
 		SoundManager.Instance ().playSound (SoundManager.SOUND_ID.LOOP_BACKGROUND, 0.5f);
-		Debug.Log (tileMapObject);
 	}
+
 	public void UpdateCoinCollection(int coinCollected)
 	{
 		coinCollectedText.text =coinCollected.ToString() + "/"+ GridManager.Instance.totalCoinCount.ToString();
