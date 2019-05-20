@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;	
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -15,8 +14,6 @@ public class Player : MonoBehaviour {
 
     public bool onCooldown = false;
     private float moveTime = 0.1f;
-
-    private AudioSource walkingSound;
 
     // Use this for initialization
     void Start () 
@@ -58,11 +55,11 @@ public class Player : MonoBehaviour {
 			return;
 
         //To player move directions.
-
+		#if UNITY_EDITOR
         //To get move directions
         horizontal = (int)(Input.GetAxisRaw("Horizontal"));
         vertical = (int)(Input.GetAxisRaw("Vertical"));
-
+		#endif
         //We can't go in both directions at the same time making one as zero
         if ( horizontal != 0 )
             vertical = 0;
@@ -70,6 +67,7 @@ public class Player : MonoBehaviour {
         //If there's a direction, we are trying to move.
         if (horizontal != 0 || vertical != 0)
         {
+			//Taking a break from input To complete move animation
             StartCoroutine(actionCooldown(0.2f));
             Move(horizontal, vertical);
 			horizontal = vertical = 0;
@@ -82,10 +80,8 @@ public class Player : MonoBehaviour {
         Vector2 targetCell = startCell + new Vector2(xDir, yDir);
 
         bool isOnGround = getCell(groundTilemap, startCell) != null; //If the player is on the ground
-
         bool hasGroundTile = getCell(groundTilemap, targetCell) != null; //If target Tile has a ground
         bool hasObstacleTile = getCell(obstaclesTilemap, targetCell) != null; //if target Tile has an obstacle
-       
 
         //If the player starts their movement from a ground tile.
 		if (isOnGround) 
@@ -104,16 +100,10 @@ public class Player : MonoBehaviour {
 
     private IEnumerator SmoothMovement(Vector3 end)
     {
-        while (isMoving) yield return null;
+        while (isMoving) 
+			yield return null;
 
         isMoving = true;
-
-        //Play movement sound
-        if ( walkingSound != null )
-        {
-            walkingSound.loop = true;
-            walkingSound.Play();
-        }
 
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
         float inverseMoveTime = 1 / moveTime;
@@ -126,9 +116,6 @@ public class Player : MonoBehaviour {
 
             yield return null;
         }
-
-        if (walkingSound != null)
-            walkingSound.loop = false;
 
         isMoving = false;
     }
@@ -177,19 +164,14 @@ public class Player : MonoBehaviour {
             cooldown -= Time.deltaTime;
             yield return null;
         }
-
         onCooldown = false;
     }
-
-
+		
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        //Debug.Log("Something touched!");
-        //If we collided with the exit, we load the next level in two seconds.
         if ( coll.tag == "exitTag")
         {
-
 			if(GridManager.Instance.totalCoinCount == coinCount)
 			{
 				SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_END);
@@ -200,7 +182,6 @@ public class Player : MonoBehaviour {
 			{
 				SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_COLLIDE_WITH_BLOCKER);
 			}
-
         }
         else if ( coll.tag == "coinTag")
         {
@@ -213,25 +194,11 @@ public class Player : MonoBehaviour {
 
 		if ( coll.tag == "enemyTag")
 		{
-//			GameManager.Instance.isGameOver = true;
-//			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
+			#if CHEAT
+			return;
+			#endif
+			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}
-
-    }
-
-	public void grassSound(){
-    }
-
-    public Collider2D whatsThere(Vector2 targetPos)
-    {
-        RaycastHit2D hit;
-        hit = Physics2D.Linecast(targetPos, targetPos);
-        return hit.collider;
-    }
-
-    private void NextLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Single);
     }
 
     private TileBase getCell(Tilemap tilemap, Vector2 cellWorldPos)

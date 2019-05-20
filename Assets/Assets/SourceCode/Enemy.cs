@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour {
 	public Tilemap groundTilemap;
 	public Tilemap obstaclesTilemap;
 
+	int randomMoveX;
+	int randomMoveY;
+	int patrolMove = 1;
 
 	void Start () 
 	{
@@ -22,14 +25,12 @@ public class Enemy : MonoBehaviour {
 		}
 		if(enemyType == EnemyType.FOLLWER)
 		{
-			InvokeRepeating ("FollowPlayer", 2, 1);
+			InvokeRepeating ("FollowPlayer", 2, 1.4f);
 		}
 
 	}
-	int randomMoveX;
-	int randomMoveY;
 
-	int patrolMove = 1;
+	#region PATROLLER
 	int ReverseMovememt()
 	{
 		Vector2 startCell = transform.position;
@@ -43,6 +44,7 @@ public class Enemy : MonoBehaviour {
 			return patrolMove;
 
 	}
+
 	void RandomMoveForPatroller()
 	{
 		if(GameManager.Instance.isGameOver)
@@ -58,23 +60,10 @@ public class Enemy : MonoBehaviour {
 		}
 		Move (new Vector2(randomMoveX, randomMoveY));
 	}
+		
+	#endregion
 
-	void Move(Vector2 moveDirection)
-	{
-		Vector2 startCell = transform.position;
-		Vector2 targetCell = startCell + moveDirection;//new Vector2 (randomMoveX, randomMoveY);
-
-		bool isOnGround = getCell (groundTilemap, startCell) != null; //If the player is on the ground
-
-		bool hasGroundTile = getCell (groundTilemap, targetCell) != null; //If target Tile has a ground
-		bool hasObstacleTile = getCell (obstaclesTilemap, targetCell) != null; //if target Tile has an obstacle
-
-		if (hasGroundTile && !hasObstacleTile) 
-		{
-			StartCoroutine (SmoothMovement (targetCell));
-		}
-	}
-
+	#region FOLLOWER
 
 	void FollowPlayer()
 	{
@@ -84,17 +73,6 @@ public class Enemy : MonoBehaviour {
 		}
 
 		Vector3 targetCoordinate = FindPlayerDirection ();
-
-		bool hasGroundTile = getCell (groundTilemap, transform.position + targetCoordinate) != null; //If target Tile has a ground
-		bool hasObstacleTile = getCell (obstaclesTilemap, transform.position + targetCoordinate) != null; //if target Tile has an obstacle
-
-		if(!hasGroundTile || hasObstacleTile)
-		{
-		
-			Debug.Log (targetCoordinate);
-
-		}
-
 
 		Move (targetCoordinate);
 	}
@@ -126,30 +104,80 @@ public class Enemy : MonoBehaviour {
 				whereToMove = new Vector2 (0, -1);
 			}
 		}
-		else if(distaceVector.x != 0)
+		else if(distaceVector.x != 0 || distaceVector.y != 0)
 		{
-			if (distaceVector.x > 0) 
+			int randomDirection = Random.Range (1, 10);
+			if (randomDirection % 2 == 0) 
+			{		
+				if (distaceVector.x > 0) 
+				{
+					whereToMove = new Vector2 (1, 0);
+				} 
+				else 
+				{
+					whereToMove = new Vector2 (-1, 0);
+				}
+			} 
+			else 
 			{
-				whereToMove = new Vector2 (1, 0);
+				if (distaceVector.y > 0) 
+				{
+					whereToMove = new Vector2 (0, 1);
+				} 
+				else 
+				{
+					whereToMove = new Vector2 (0, -1);
+				}
 			}
-			else
-			{
-				whereToMove = new Vector2 (-1, 0);
-			}
+//		else if(distaceVector.y != 0)
+//		{
+//			if (distaceVector.y > 0) 
+//			{
+//				whereToMove = new Vector2 (0, 1);
+//			}
+//			else
+//			{
+//				whereToMove = new Vector2 (0, -1);
+//			}
 		}
-		else if(distaceVector.y != 0)
-		{
-			if (distaceVector.y > 0) 
-			{
-				whereToMove = new Vector2 (0, 1);
-			}
-			else
-			{
-				whereToMove = new Vector2 (0, -1);
-			}
-		}
-//		Debug.LogError (distaceVector +"    " + whereToMove);
 		return whereToMove;
+	}
+	#endregion
+
+	#region LAZY_ENEMY
+	private void OnTriggerEnter2D(Collider2D coll)
+	{
+		if ( coll.tag == "Player")
+		{
+			InvokeRepeating("FollowPlayer",0.25f, 0.85f);
+		}
+	}
+	private void OnTriggerExit2D(Collider2D coll)
+	{
+		if (coll.tag == "Player") 
+		{
+			Debug.LogError ("Exit");
+			CancelInvoke ();
+		}
+	}
+
+
+	#endregion
+
+	void Move(Vector2 moveDirection)
+	{
+		Vector2 startCell = transform.position;
+		Vector2 targetCell = startCell + moveDirection;//new Vector2 (randomMoveX, randomMoveY);
+
+		bool isOnGround = getCell (groundTilemap, startCell) != null; //If the player is on the ground
+
+		bool hasGroundTile = getCell (groundTilemap, targetCell) != null; //If target Tile has a ground
+		bool hasObstacleTile = getCell (obstaclesTilemap, targetCell) != null; //if target Tile has an obstacle
+
+		if (hasGroundTile && !hasObstacleTile) 
+		{
+			StartCoroutine (SmoothMovement (targetCell));
+		}
 	}
 
 	private IEnumerator SmoothMovement(Vector3 end)

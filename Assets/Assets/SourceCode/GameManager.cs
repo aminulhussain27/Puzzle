@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerator ShowGameOverPanelWithDelay(bool isWon)
 	{
+		isGameOver = true;
 		SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_END);
 
 		yield return new WaitForSeconds (1.2f);
