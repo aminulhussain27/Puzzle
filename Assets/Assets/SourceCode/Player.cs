@@ -196,7 +196,7 @@ public class Player : MonoBehaviour {
 		if ( coll.tag == "enemyTag")
 		{
 
-//			return;
+			return;
 
 			StartCoroutine (GameManager.Instance.ShowGameOverPanelWithDelay (false));
 		}

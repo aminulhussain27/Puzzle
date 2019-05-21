@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
 		if(enemyType == EnemyType.FOLLWER)
 		{
 			//Actively following at a time gap of 1.4
-			InvokeRepeating ("FollowPlayer", 2, 1.4f);
+			InvokeRepeating ("FollowPlayer", 2, 0.9f);
 		}
 	}
 
@@ -71,6 +71,7 @@ public class Enemy : MonoBehaviour {
 		//If game is over Stopping all the Invoke function
 		if(GameManager.Instance.isGameOver)
 		{
+			Debug.LogError ("GameOver");
 			CancelInvoke ();
 		}
 
@@ -149,16 +150,16 @@ public class Enemy : MonoBehaviour {
 	//Player came inside the area
 	private void OnTriggerEnter2D(Collider2D coll)
 	{
-		if ( coll.tag == "Player")
+		if (enemyType == EnemyType.LAZY && coll.tag == "Player")
 		{
 			//Follow the player with some frequency of time
-			InvokeRepeating("FollowPlayer",0.75f, 1.15f);
+			InvokeRepeating ("FollowPlayer", 0.5f, 1.15f);
 		}
 	}
 	//Is player went outside my Zone, Lets not follow him
 	private void OnTriggerExit2D(Collider2D coll)
 	{
-		if (coll.tag == "Player") 
+		if (enemyType == EnemyType.LAZY && coll.tag == "Player") 
 		{
 			CancelInvoke ();
 		}

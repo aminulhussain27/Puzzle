@@ -222,6 +222,7 @@ MonoBehaviour:
   - {fileID: 1051029764016058, guid: 26e7a0952c9ebe6449fa8aae9962c03c, type: 2}
   - {fileID: 1051029764016058, guid: 34838c05f8713a0479e2e50ab6b05811, type: 2}
   - {fileID: 1051029764016058, guid: 1c0a3a7f2b109244ca0e441cdb9a075f, type: 2}
+  - {fileID: 1051029764016058, guid: e0e61aaf013080a4e8af09d10e78fa81, type: 2}
   playButton: {fileID: 665748481}
   quitButton: {fileID: 825591808}
   upButton: {fileID: 1823709759}
