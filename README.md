@@ -13,7 +13,8 @@
 
 #  Screenshots
 
+![Screenshot_20190523-013534](https://user-images.githubusercontent.com/17415000/58205256-c4172f00-7cfb-11e9-8a8d-090de9ff41c7.png)
+![Screenshot_20190523-011036](https://user-images.githubusercontent.com/17415000/58205257-c4172f00-7cfb-11e9-8078-a3ba52ef8ee8.png)
 ![GameOver](https://user-images.githubusercontent.com/17415000/58204545-18b9aa80-7cfa-11e9-8d48-29546b02e12e.png)
 ![GameOverMessage](https://user-images.githubusercontent.com/17415000/58204546-18b9aa80-7cfa-11e9-9442-98c7264d247e.png)
-![Menu](https://user-images.githubusercontent.com/17415000/58204547-18b9aa80-7cfa-11e9-8449-be6c11f9b2fa.png)
 
