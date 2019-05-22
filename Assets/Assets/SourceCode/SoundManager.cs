@@ -47,6 +47,16 @@ public class SoundManager : MonoBehaviour
 		//Destroying the sound object after fully playing
 		Destroy (soundObject, audioSource.clip.length);
 	}
+
+	public void StopallSound()
+	{
+
+		for (int i = 1; i <= transform.childCount; i++) 
+		{
+			Destroy (transform.GetChild(i-1).gameObject);
+		}
+
+	}
 		
 		
 	//These are the Clip Id

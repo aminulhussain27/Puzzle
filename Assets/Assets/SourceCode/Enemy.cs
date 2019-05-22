@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
 		if(enemyType == EnemyType.FOLLWER)
 		{
 			//Actively following at a time gap of 1.4
-			InvokeRepeating ("FollowPlayer", 2, 0.9f);
+			InvokeRepeating ("FollowPlayer", 2, 1.2f);
 		}
 	}
 
@@ -153,7 +153,7 @@ public class Enemy : MonoBehaviour {
 		{
 			transform.GetComponent<Animator> ().enabled = true;
 			//Follow the player with some frequency of time
-			InvokeRepeating ("FollowPlayer", 0.9f, 0.9f);
+			InvokeRepeating ("FollowPlayer", 0.8f, 0.8f);
 		}
 	}
 	//Is player went outside my Zone, Lets not follow him

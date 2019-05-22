@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject mainMenuPanel;
 	public GameObject[] levelTileMap;
 
-	public Button cheatButton;
 	public Button playButton;
 	public Button quitButton;
 	public Button upButton;
@@ -26,7 +25,6 @@ public class GameManager : MonoBehaviour {
 	public int currentLevel;
 
 	public bool isGameOver;
-	public bool isCheatActive;
 
 	private GameObject tileMapObject;//Need to Instantiate tileMap
 
@@ -61,20 +59,6 @@ public class GameManager : MonoBehaviour {
 			#else
 			Application.Quit();
 			#endif
-		});
-
-		cheatButton.onClick.RemoveAllListeners ();
-		cheatButton.onClick.AddListener (() => {
-			isCheatActive = !isCheatActive;
-
-			if(isCheatActive)
-			{
-				cheatButton.transform.Find("Text").GetComponent<Text>().text ="CHEAT ON";
-			}
-			else
-			{
-				cheatButton.transform.Find("Text").GetComponent<Text>().text ="CHEAT OFF";
-			}
 		});
 	}
 
@@ -124,6 +108,8 @@ public class GameManager : MonoBehaviour {
 
 		tileMapObject = GameObject.Instantiate (levelTileMap [currentLevel]);
 		mainMenuPanel.SetActive (false);
+		//Stopping all sound which was created in last session
+		SoundManager.Instance ().StopallSound ();
 		SoundManager.Instance ().playSound (SoundManager.SOUND_ID.LOOP_BACKGROUND, 0.5f);
 	}
 
