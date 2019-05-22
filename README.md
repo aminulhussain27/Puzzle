@@ -6,6 +6,10 @@
 ○	Player: Has to collect the coins and reach the exit. (Can be cube/ circle/ triangle)
 ○	Start: This is the grid where the player spawns
 ○	Exit: This is the grid where player should reach to end the level. This only opens on collecting all the coins present in the level.
-○	Coins: These are collectibles present one per each grid. Coins should be present in all the grids except, blockers, start and exit.
-○	Blockers: These are blocks present in the grid where player or enemy can’t reach or pass on them (The range of blocker should be in 4 to 6).
+○	Coins: These are collectibles present one per each grid.
+○	Blockers: These are blocks present in the grid where player or enemy can’t reach or pass on them.
 ○	Enemies: Player when gets in contact of enemies the level is lost. 
+
+
+#Images
+
