@@ -150,7 +150,7 @@ TextureImporter:
       tessellationDetail: 0
     outline: []
     physicsShape: []
-  spritePackingTag: 
+  spritePackingTag: GameplaySprite
   userData: 
   assetBundleName: 
   assetBundleVariant: 

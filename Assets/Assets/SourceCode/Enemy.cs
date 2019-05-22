@@ -71,7 +71,6 @@ public class Enemy : MonoBehaviour {
 		//If game is over Stopping all the Invoke function
 		if(GameManager.Instance.isGameOver)
 		{
-			Debug.LogError ("GameOver");
 			CancelInvoke ();
 		}
 
@@ -152,8 +151,9 @@ public class Enemy : MonoBehaviour {
 	{
 		if (enemyType == EnemyType.LAZY && coll.tag == "Player")
 		{
+			transform.GetComponent<Animator> ().enabled = true;
 			//Follow the player with some frequency of time
-			InvokeRepeating ("FollowPlayer", 0.5f, 1.15f);
+			InvokeRepeating ("FollowPlayer", 0.9f, 0.9f);
 		}
 	}
 	//Is player went outside my Zone, Lets not follow him
@@ -161,6 +161,7 @@ public class Enemy : MonoBehaviour {
 	{
 		if (enemyType == EnemyType.LAZY && coll.tag == "Player") 
 		{
+			transform.GetComponent<Animator> ().enabled = false;
 			CancelInvoke ();
 		}
 	}

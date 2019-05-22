@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject mainMenuPanel;
 	public GameObject[] levelTileMap;
 
-
+	public Button cheatButton;
 	public Button playButton;
 	public Button quitButton;
 	public Button upButton;
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
 	public int currentLevel;
 
 	public bool isGameOver;
+	public bool isCheatActive;
 
 	private GameObject tileMapObject;//Need to Instantiate tileMap
 
@@ -61,6 +62,20 @@ public class GameManager : MonoBehaviour {
 			Application.Quit();
 			#endif
 		});
+
+		cheatButton.onClick.RemoveAllListeners ();
+		cheatButton.onClick.AddListener (() => {
+			isCheatActive = !isCheatActive;
+
+			if(isCheatActive)
+			{
+				cheatButton.transform.Find("Text").GetComponent<Text>().text ="CHEAT ON";
+			}
+			else
+			{
+				cheatButton.transform.Find("Text").GetComponent<Text>().text ="CHEAT OFF";
+			}
+		});
 	}
 
 	//this will start when game is over Either win or loose
@@ -68,8 +83,7 @@ public class GameManager : MonoBehaviour {
 	{
 		isGameOver = true;//Making game status as gameover
 		SoundManager.Instance ().playSound (SoundManager.SOUND_ID.SFX_END);//Game over sound
-
-		yield return new WaitForSeconds (1.1f);//waiting for some time to show the main panel
+		yield return new WaitForSeconds (0.8f);//waiting for some time to show the main panel
 		if (isWon) 
 		{
 			mainMenuPanel.SetActive (true);
@@ -116,7 +130,7 @@ public class GameManager : MonoBehaviour {
 	//Updaing UI when coin is being collected
 	public void UpdateCoinCollection(int coinCollected)
 	{
-		coinCollectedText.text =coinCollected.ToString() + "/"+ GridManager.Instance.totalCoinCount.ToString();
+		coinCollectedText.text = "SCORE: " + coinCollected.ToString() + "/"+ GridManager.Instance.totalCoinCount.ToString();
 		if(coinCollected == GridManager.Instance.totalCoinCount)
 		{
 			//All the coins collected, So giving some congratulation text
